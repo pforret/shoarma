@@ -90,7 +90,7 @@ do_generate() {
   find "$input" -type f -name "*.jpg" \
   | while read -r image ; do
       image_title=$(read_exif "$image" "Object Name")
-      image_title=$(read_exif "$image" "Object Name")
+      image_author=$(read_exif "$image" "Credit")
       echo "$image_title"
     done
 }
@@ -108,19 +108,18 @@ function read_exif(){
   image_exif="$tmp_dir/$slug.$hash.exif.txt"
   if [[ ! -f "$image_exif" ]] ; then
     debug "Get EXIF into $image_exif"
-    LC_ALL=C LC_CTYPE=C LANG=C exiftool "$image" > "$image_exif"
+    LC_ALL=C LC_CTYPE=C LANG=C exiftool "$image" > "$image_exif" 2>/dev/null
   fi
   < "$image_exif" awk -v name="$name" -F: '
     function ltrim(s) { sub(/^[ \t\r\n]+/, "", s); return s }
     function rtrim(s) { sub(/[ \t\r\n]+$/, "", s); return s }
     function trim(s) { return rtrim(ltrim(s)); }
-
     {
-    $1=trim($1)
-    $2=trim($2)
-    if($1 == name) {
-      print $2
-      }
+      $1=trim($1)
+      $2=trim($2)
+      if($1 == name) {
+        print $2
+        }
     }
   '
 }

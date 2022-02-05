@@ -1,2 +1,4 @@
-# sisg
-Static Image Site Generator - make e.g. Jekyll posts from folder of images
+# Shoarma
+Static Image Markdown Generator - make Markdown posts from folder of images, using the EXIF information in the photos.
+
+![](/assets/url.download.68b329.jpg)

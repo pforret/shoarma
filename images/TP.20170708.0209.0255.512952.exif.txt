@@ -1,0 +1,285 @@
+ExifTool Version Number         : 12.30
+File Name                       : TP.20170708.0209.0255.jpg
+Directory                       : ./images
+File Size                       : 700 KiB
+File Modification Date/Time     : 2017:07:15 12:14:12+02:00
+File Access Date/Time           : 2022:02:05 17:30:13+01:00
+File Inode Change Date/Time     : 2022:02:05 15:37:49+01:00
+File Permissions                : -rw-r--r--
+File Type                       : JPEG
+File Type Extension             : jpg
+MIME Type                       : image/jpeg
+JFIF Version                    : 1.01
+Current IPTC Digest             : e147cfc9e5a85b11395047eb401fd8e0
+Object Name                     : MSTF July 2017
+Credit                          : Tango Paparazzo
+Copyright Notice                : http://tangopaparazzo.com
+Contact                         : tangopaparazzo@gmail.com
+Caption-Abstract                : 2017 www.tangopaparazzo.com - www.facebook.com/tangopaparazzo/
+Keywords                        : croatia, festival, mstf, porec, seaside, tango
+By-line                         : http://tangopaparazzo.com
+Exif Byte Order                 : Little-endian (Intel, II)
+Make                            : Canon
+Camera Model Name               : Canon EOS 5D Mark III
+X Resolution                    : 300
+Y Resolution                    : 300
+Resolution Unit                 : inches
+Software                        : Adobe Photoshop Lightroom 6.10.1 (Macintosh)
+Modify Date                     : 2017:07:15 11:37:24
+Artist                          : Tango Paparazzo
+Copyright                       : Tango Paparazzo
+Exposure Time                   : 1/125
+F Number                        : 1.4
+Exposure Program                : Aperture-priority AE
+ISO                             : 100
+Sensitivity Type                : Recommended Exposure Index
+Recommended Exposure Index      : 100
+Exif Version                    : 0230
+Date/Time Original              : 2017:07:08 02:09:42
+Create Date                     : 2017:07:08 02:09:42
+Shutter Speed Value             : 1/125
+Aperture Value                  : 1.4
+Exposure Compensation           : 0
+Max Aperture Value              : 1.4
+Metering Mode                   : Spot
+Flash                           : Off, Did not fire
+Focal Length                    : 50.0 mm
+Sub Sec Time Original           : 91
+Sub Sec Time Digitized          : 91
+Color Space                     : sRGB
+Focal Plane X Resolution        : 3942.505133
+Focal Plane Y Resolution        : 3950.617284
+Focal Plane Resolution Unit     : inches
+Custom Rendered                 : Normal
+Exposure Mode                   : Auto
+White Balance                   : Auto
+Scene Capture Type              : Standard
+Serial Number                   : 063024025586
+Lens Info                       : 50mm f/?
+Lens Model                      : 50mm
+Lens Serial Number              : 0000000000
+Compression                     : JPEG (old-style)
+Thumbnail Offset                : 1234
+Thumbnail Length                : 19646
+Profile CMM Type                : Linotronic
+Profile Version                 : 2.1.0
+Profile Class                   : Display Device Profile
+Color Space Data                : RGB
+Profile Connection Space        : XYZ
+Profile Date Time               : 1998:02:09 06:49:00
+Profile File Signature          : acsp
+Primary Platform                : Microsoft Corporation
+CMM Flags                       : Not Embedded, Independent
+Device Manufacturer             : Hewlett-Packard
+Device Model                    : sRGB
+Device Attributes               : Reflective, Glossy, Positive, Color
+Rendering Intent                : Perceptual
+Connection Space Illuminant     : 0.9642 1 0.82491
+Profile Creator                 : Hewlett-Packard
+Profile ID                      : 0
+Profile Copyright               : Copyright (c) 1998 Hewlett-Packard Company
+Profile Description             : sRGB IEC61966-2.1
+Media White Point               : 0.95045 1 1.08905
+Media Black Point               : 0 0 0
+Red Matrix Column               : 0.43607 0.22249 0.01392
+Green Matrix Column             : 0.38515 0.71687 0.09708
+Blue Matrix Column              : 0.14307 0.06061 0.7141
+Device Mfg Desc                 : IEC http://www.iec.ch
+Device Model Desc               : IEC 61966-2.1 Default RGB colour space - sRGB
+Viewing Cond Desc               : Reference Viewing Condition in IEC61966-2.1
+Viewing Cond Illuminant         : 19.6445 20.3718 16.8089
+Viewing Cond Surround           : 3.92889 4.07439 3.36179
+Viewing Cond Illuminant Type    : D50
+Luminance                       : 76.03647 80 87.12462
+Measurement Observer            : CIE 1931
+Measurement Backing             : 0 0 0
+Measurement Geometry            : Unknown
+Measurement Flare               : 0.999%
+Measurement Illuminant          : D65
+Technology                      : Cathode Ray Tube Display
+Red Tone Reproduction Curve     : (Binary data 2060 bytes, use -b option to extract)
+Green Tone Reproduction Curve   : (Binary data 2060 bytes, use -b option to extract)
+Blue Tone Reproduction Curve    : (Binary data 2060 bytes, use -b option to extract)
+XMP Toolkit                     : Adobe XMP Core 5.6-c128 79.159124, 2016/03/18-14:01:55
+Creator Tool                    : Adobe Photoshop Lightroom 6.10.1 (Macintosh)
+Metadata Date                   : 2017:07:15 11:37:24+02:00
+Format                          : image/jpeg
+Lens                            : 50mm
+Image Number                    : 0
+Approximate Focus Distance      : 3.9
+Flash Compensation              : 0
+Firmware                        : 1.1.3
+Distortion Correction Already Applied: True
+Vignette Correction Already Applied: True
+Date Created                    : 2017:07:08 02:09:42.91
+Document ID                     : xmp.did:27607cfa-f2f2-43b4-a2ee-80e3c3558162
+Original Document ID            : 133A9883B3FD3971CB6B6DCEA5F0F4B9
+Instance ID                     : xmp.iid:27607cfa-f2f2-43b4-a2ee-80e3c3558162
+Marked                          : True
+Web Statement                   : www.tangopaparazzo.com
+Version                         : 9.10.1
+Process Version                 : 6.7
+Auto White Version              : 134348800
+Incremental Temperature         : -10
+Incremental Tint                : -80
+Saturation                      : -10
+Sharpness                       : 25
+Luminance Smoothing             : 0
+Color Noise Reduction           : 100
+Vignette Amount                 : 0
+Shadow Tint                     : 0
+Red Hue                         : 0
+Red Saturation                  : 0
+Green Hue                       : 0
+Green Saturation                : 0
+Blue Hue                        : 0
+Blue Saturation                 : 0
+Vibrance                        : 0
+Hue Adjustment Red              : +15
+Hue Adjustment Orange           : +10
+Hue Adjustment Yellow           : +5
+Hue Adjustment Green            : 0
+Hue Adjustment Aqua             : +10
+Hue Adjustment Blue             : -10
+Hue Adjustment Purple           : 0
+Hue Adjustment Magenta          : +5
+Saturation Adjustment Red       : -61
+Saturation Adjustment Orange    : -10
+Saturation Adjustment Yellow    : -5
+Saturation Adjustment Green     : -30
+Saturation Adjustment Aqua      : -35
+Saturation Adjustment Blue      : -25
+Saturation Adjustment Purple    : -76
+Saturation Adjustment Magenta   : -76
+Luminance Adjustment Red        : 0
+Luminance Adjustment Orange     : +5
+Luminance Adjustment Yellow     : +10
+Luminance Adjustment Green      : 0
+Luminance Adjustment Aqua       : +15
+Luminance Adjustment Blue       : -25
+Luminance Adjustment Purple     : -5
+Luminance Adjustment Magenta    : +10
+Split Toning Shadow Hue         : 0
+Split Toning Shadow Saturation  : 0
+Split Toning Highlight Hue      : 0
+Split Toning Highlight Saturation: 0
+Split Toning Balance            : 0
+Parametric Shadows              : 0
+Parametric Darks                : +10
+Parametric Lights               : +10
+Parametric Highlights           : 0
+Parametric Shadow Split         : 20
+Parametric Midtone Split        : 48
+Parametric Highlight Split      : 75
+Sharpen Radius                  : +1.0
+Sharpen Detail                  : 25
+Sharpen Edge Masking            : 0
+Post Crop Vignette Amount       : -26
+Post Crop Vignette Midpoint     : 50
+Post Crop Vignette Feather      : 50
+Post Crop Vignette Roundness    : 0
+Post Crop Vignette Style        : 1
+Post Crop Vignette Highlight Contrast: 0
+Grain Amount                    : 15
+Grain Size                      : 14
+Grain Frequency                 : 21
+Color Noise Reduction Detail    : 50
+Color Noise Reduction Smoothness: 50
+Lens Profile Enable             : 1
+Lens Manual Distortion Amount   : 0
+Perspective Vertical            : 0
+Perspective Horizontal          : 0
+Perspective Rotate              : 0.0
+Perspective Scale               : 100
+Perspective Aspect              : 0
+Perspective Upright             : 0
+Perspective X                   : 0.00
+Perspective Y                   : 0.00
+Auto Lateral CA                 : 0
+Exposure 2012                   : +0.80
+Contrast 2012                   : 0
+Highlights 2012                 : -40
+Shadows 2012                    : +75
+Whites 2012                     : -20
+Blacks 2012                     : +15
+Clarity 2012                    : -10
+Defringe Purple Amount          : 0
+Defringe Purple Hue Lo          : 30
+Defringe Purple Hue Hi          : 70
+Defringe Green Amount           : 0
+Defringe Green Hue Lo           : 40
+Defringe Green Hue Hi           : 60
+Dehaze                          : 0
+Tone Map Strength               : 0
+Convert To Grayscale            : False
+Tone Curve Name                 : Linear
+Tone Curve Name 2012            : Vista 800 N-T
+Camera Profile                  : Embedded
+Lens Profile Setup              : Custom
+Lens Profile Name               : Adobe (Canon EF 50mm f/1.4 USM)
+Lens Profile Filename           : Canon EOS-1Ds Mark III (Canon EF 50mm f1.4 USM).lcp
+Lens Profile Digest             : 0F4546AFE72B5D60D1AEF81618EC9602
+Lens Profile Distortion Scale   : 100
+Lens Profile Chromatic Aberration Scale: 100
+Lens Profile Vignetting Scale   : 100
+Upright Version                 : 151388160
+Upright Center Mode             : 0
+Upright Center Norm X           : 0.5
+Upright Center Norm Y           : 0.5
+Upright Focal Mode              : 0
+Upright Focal Length 35mm       : 35
+Upright Preview                 : False
+Upright Transform Count         : 6
+Upright Four Segments Count     : 0
+Grain Seed                      : 1503503193
+Has Settings                    : True
+Crop Top                        : 0
+Crop Left                       : 0.132179
+Crop Bottom                     : 1
+Crop Right                      : 0.798845
+Crop Angle                      : 0
+Crop Constrain To Warp          : 0
+Has Crop                        : True
+Already Applied                 : True
+Creator                         : Tango Paparazzo
+Rights                          : Tango Paparazzo
+History Action                  : derived, saved
+History Parameters              : saved to new location
+History Instance ID             : xmp.iid:27607cfa-f2f2-43b4-a2ee-80e3c3558162
+History When                    : 2017:07:15 11:37:24+02:00
+History Software Agent          : Adobe Photoshop Lightroom 6.10.1 (Macintosh)
+History Changed                 : /
+Derived From Document ID        : 133A9883B3FD3971CB6B6DCEA5F0F4B9
+Derived From Original Document ID: 133A9883B3FD3971CB6B6DCEA5F0F4B9
+Creator City                    : Brussels
+Creator Country                 : Belgium
+Creator Work URL                : www.tangopaparazzo.com
+Tone Curve                      : 0, 0, 255, 255
+Tone Curve Red                  : 0, 0, 255, 255
+Tone Curve Green                : 0, 0, 255, 255
+Tone Curve Blue                 : 0, 0, 255, 255
+Tone Curve PV2012               : 0, 32, 36, 40, 79, 75, 133, 133, 185, 189, 255, 245
+Tone Curve PV2012 Red           : 0, 6, 31, 11, 83, 62, 117, 121, 174, 196, 255, 255
+Tone Curve PV2012 Green         : 0, 0, 32, 10, 80, 65, 114, 120, 173, 198, 255, 255
+Tone Curve PV2012 Blue          : 0, 0, 22, 15, 67, 57, 113, 121, 174, 196, 255, 251
+Image Width                     : 1500
+Image Height                    : 1500
+Encoding Process                : Baseline DCT, Huffman coding
+Bits Per Sample                 : 8
+Color Components                : 3
+Y Cb Cr Sub Sampling            : YCbCr4:4:4 (1 1)
+Aperture                        : 1.4
+Image Size                      : 1500x1500
+Megapixels                      : 2.2
+Scale Factor To 35 mm Equivalent: 1.0
+Shutter Speed                   : 1/125
+Create Date                     : 2017:07:08 02:09:42.91
+Date/Time Original              : 2017:07:08 02:09:42.91
+Thumbnail Image                 : (Binary data 19646 bytes, use -b option to extract)
+Circle Of Confusion             : 0.031 mm
+Depth Of Field                  : 0.52 m (3.66 - 4.18 m)
+Field Of View                   : 40.7 deg
+Focal Length                    : 50.0 mm (35 mm equivalent: 48.5 mm)
+Hyperfocal Distance             : 57.69 m
+Light Value                     : 7.9
+Lens ID                         : Sigma 50mm f/1.4 DG HSM | A or Zeiss Milvus 50mm f/1.4 or Sigma 50mm f/1.5 FF High-Speed Prime | 017 or Tokina Opera 50mm f/1.4 FF
