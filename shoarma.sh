@@ -97,7 +97,7 @@ do_generate() {
   find "$input" -type f -name "*.jpg" \
   | while read -r image ; do
       progress "$image ..."
-      exif_title=$(read_exif "$image" "Object Name")
+      exif_title=$(read_exif "$image" "Object Name" | sed 's/://g')
       hash=$(echo "$image" | hash 6)
       slug=$(slugify "$exif_title" | cut -c 1-16)
       [[ -z "$slug" ]] && slug="$hash"
