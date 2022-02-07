@@ -21,7 +21,9 @@ flag|v|verbose|output more
 flag|f|force|do not ask for confirmation (always yes)
 option|l|log_dir|folder for log files |$HOME/log/$script_prefix
 option|t|tmp_dir|folder for temp files|/tmp/$script_prefix
+option|c|country|default country|belgium
 option|i|input|input folder with images|./images
+option|m|template|markdown template|$script_install_folder/templates/post.md
 option|o|output|output folder for MD files|./_posts
 param|1|action|action to perform: generate
 " | grep -v '^#' | grep -v '^\s*$'
@@ -81,17 +83,80 @@ do_generate() {
   log_to_file "generate"
   require_binary "exiftool"
   local image
-  local image_title
+
   [[ ! -d "$input" ]] && die "Cannot find input folder [$input]"
   debug "Input folder : [$input]"
   [[ ! -d "$output" ]] && mkdir -p "$output"
   debug "Output folder: [$output]"
+  [[ ! -f "$template" ]] && die "Cannot find template file [$template]"
+  debug "Template file: [$template]"
 
   find "$input" -type f -name "*.jpg" \
   | while read -r image ; do
-      image_title=$(read_exif "$image" "Object Name")
-      image_author=$(read_exif "$image" "Credit")
-      echo "$image_title"
+      progress "$image ..."
+      exif_title=$(read_exif "$image" "Object Name")
+      slug=$(slugify "$exif_title")
+      hash=$(echo "$image" | hash 6)
+      filename=$(basename "$image" .jpg)
+      fileslug=$(slugify "$filename")
+      exif_author=$(read_exif "$image" "Credit")
+      exif_keywords=$(read_exif "$image" "Keywords")
+      keyword_bullets=$(echo "$exif_keywords" | keywords_to_bullets "," )
+      this_country=$(echo "$exif_keywords" | keywords_to_country "," "${country:-belgium}" )
+      exif_caption=$(read_exif "$image" "Caption-Abstract")
+      exif_modified=$(read_exif "$image" "File Modification Date/Time")
+      exif_created=$(read_exif "$image" "Date Created")
+      date="${exif_created:-$exif_modified}"
+      [[ -z "$exif_created" ]] && exif_created=$exif_modified
+      this_year=${exif_created:0:4}
+      image_path="/$(echo "$image" | sed 's|^./||')"
+
+      tmp_md=$tmp_dir/temp.$$.md
+      < "$template" awk \
+        -v country="$this_country" \
+        -v year="$this_year" \
+        -v slug="$slug" \
+        -v filename="$filename" \
+        -v fileslug="$fileslug" \
+        -v hash="$hash" \
+        -v exif_author="$exif_author" \
+        -v exif_caption="$exif_caption" \
+        -v exif_keywords="$exif_keywords" \
+        -v exif_modified="$exif_modified" \
+        -v exif_created="$exif_created" \
+        -v date="$date" \
+        -v exif_title="$exif_title" \
+        -v image_path="$image_path" \
+        -v keyword_bullets="$keyword_bullets" \
+        '
+      {
+        gsub("{country}",country);
+        gsub("{date}",date);
+        gsub("{exif_author}",exif_author);
+        gsub("{exif_caption}",exif_caption);
+        gsub("{exif_created}",exif_created);
+        gsub("{exif_created}",exif_created);
+        gsub("{exif_keywords}",exif_keywords);
+        gsub("{exif_modified}",exif_modified);
+        gsub("{exif_title}",exif_title);
+        gsub("{filename}",filename);
+        gsub("{fileslug}",fileslug);
+        gsub("{hash}",hash);
+        gsub("{image_path}",image_path);
+        gsub("{keyword_bullets}",keyword_bullets);
+        gsub("{slug}",slug);
+        gsub("{year}",year);
+        print;
+      }
+      ' > "$tmp_md"
+
+      local md_path=$(< "$tmp_md" awk -F: '$1 == "md_path" {gsub(" ","",$2);print $2}')
+      [[ -z "$md_path" ]] && md_path="$slug.$hash.md"
+      output_md="$output/$md_path"
+      debug "Output = $output_md"
+      folder_md=$(dirname "$output_md")
+      [[ ! -d "$folder_md" ]] && mkdir -p "$folder_md"
+      mv "$tmp_md" "$output_md"
     done
 }
 
@@ -106,11 +171,14 @@ function read_exif(){
   slug=$(basename "$image" .jpg)
   hash=$(echo "$image" | hash 6)
   image_exif="$tmp_dir/$slug.$hash.exif.txt"
-  if [[ ! -f "$image_exif" ]] ; then
+  if [[ ! -f "x$image_exif" ]] ; then
     debug "Get EXIF into $image_exif"
-    LC_ALL=C LC_CTYPE=C LANG=C exiftool "$image" > "$image_exif" 2>/dev/null
+    LC_ALL=C LC_CTYPE=C LANG=C \
+      exiftool "$image" \
+    | sed 's/:/|/' \
+    > "$image_exif" 2>/dev/null
   fi
-  < "$image_exif" awk -v name="$name" -F: '
+  < "$image_exif" awk -v name="$name" -F'|' '
     function ltrim(s) { sub(/^[ \t\r\n]+/, "", s); return s }
     function rtrim(s) { sub(/[ \t\r\n]+$/, "", s); return s }
     function trim(s) { return rtrim(ltrim(s)); }
@@ -123,6 +191,52 @@ function read_exif(){
     }
   '
 }
+
+keywords_to_bullets(){
+  tr "${1:-,}" "\n" \
+  | awk '
+      function ltrim(s) { sub(/^[ \t\r\n]+/, "", s); return s }
+      function rtrim(s) { sub(/[ \t\r\n]+$/, "", s); return s }
+      function trim(s) { return rtrim(ltrim(s)); }
+      { print "- " trim($1)}
+    '
+}
+
+keywords_to_country(){
+  local country="${2:-belgium}"
+    tr "${1:-,}" "\n" \
+    | awk -v def_country="$country" '
+    function ltrim(s) { sub(/^[ \t\r\n]+/, "", s); return s }
+    function rtrim(s) { sub(/[ \t\r\n]+$/, "", s); return s }
+    function trim(s) { return rtrim(ltrim(s)); }
+    BEGIN {
+      country=def_country;
+      }
+    {
+    $1=tolower(trim($1))
+    if( $1 == "austria" || $1 == "osterreich") {country="austria"};
+    if( $1 == "belgium" || $1 == "belgie" || $1 == "belgique" ) {country="belgium"};
+    if( $1 == "bulgaria") {country="bulgaria"};
+    if( $1 == "croatia" || $1 == "horvath") {country="croatia"};
+    if( $1 == "france" ) {country="france"};
+    if( $1 == "germany" || $1 == "deutschland") {country="germany"};
+    if( $1 == "hungary") {country="hungary"};
+    if( $1 == "ireland" || $1 == "eire") {country="ireland"};
+    if( $1 == "italy" || $1 == "italia") {country="italy"};
+    if( $1 == "lebanon") {country="lebanon"};
+    if( $1 == "netherlands" || $1 == "nederland") {country="netherlands"};
+    if( $1 == "portugal") {country="portugal"};
+    if( $1 == "romania") {country="romania"};
+    if( $1 == "spain" || $1 == "espana") {country="spain"};
+    if( $1 == "turkey") {country="turkey"};
+    if( $1 == "uk" || $1 == "united kingdom" || $1 == "england" ) {country="uk"};
+    }
+    END{
+    print country;
+    }
+  '
+}
+
 do_action2() {
   log_to_file "action2"
   # (code)
