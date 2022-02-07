@@ -19,6 +19,7 @@ flag|h|help|show usage
 flag|q|quiet|no output
 flag|v|verbose|output more
 flag|f|force|do not ask for confirmation (always yes)
+flag|x|clean|remove existing .md files from output folder
 option|l|log_dir|folder for log files |$HOME/log/$script_prefix
 option|t|tmp_dir|folder for temp files|/tmp/$script_prefix
 option|c|country|default country|belgium
@@ -91,12 +92,15 @@ do_generate() {
   [[ ! -f "$template" ]] && die "Cannot find template file [$template]"
   debug "Template file: [$template]"
 
+  [[ $clean -gt 0 ]] && find "$output" -type f -name "*.md" -exec rm {} \;
+
   find "$input" -type f -name "*.jpg" \
   | while read -r image ; do
       progress "$image ..."
       exif_title=$(read_exif "$image" "Object Name")
-      slug=$(slugify "$exif_title")
       hash=$(echo "$image" | hash 6)
+      slug=$(slugify "$exif_title" | cut -c 1-16)
+      [[ -z "$slug" ]] && slug="$hash"
       filename=$(basename "$image" .jpg)
       fileslug=$(slugify "$filename")
       exif_author=$(read_exif "$image" "Credit")
@@ -107,6 +111,7 @@ do_generate() {
       exif_modified=$(read_exif "$image" "File Modification Date/Time")
       exif_created=$(read_exif "$image" "Date Created")
       date="${exif_created:-$exif_modified}"
+      date=$(echo "$date" | sed 's/:/-/g' | cut -c1-10)
       [[ -z "$exif_created" ]] && exif_created=$exif_modified
       this_year=${exif_created:0:4}
       image_path="/$(echo "$image" | sed 's|^./||')"
@@ -151,7 +156,7 @@ do_generate() {
       ' > "$tmp_md"
 
       local md_path=$(< "$tmp_md" awk -F: '$1 == "md_path" {gsub(" ","",$2);print $2}')
-      [[ -z "$md_path" ]] && md_path="$slug.$hash.md"
+      [[ -z "$md_path" ]] && md_path="$slug-$hash.md"
       output_md="$output/$md_path"
       debug "Output = $output_md"
       folder_md=$(dirname "$output_md")
@@ -171,7 +176,7 @@ function read_exif(){
   slug=$(basename "$image" .jpg)
   hash=$(echo "$image" | hash 6)
   image_exif="$tmp_dir/$slug.$hash.exif.txt"
-  if [[ ! -f "x$image_exif" ]] ; then
+  if [[ ! -f "$image_exif" ]] ; then
     debug "Get EXIF into $image_exif"
     LC_ALL=C LC_CTYPE=C LANG=C \
       exiftool "$image" \
@@ -198,7 +203,7 @@ keywords_to_bullets(){
       function ltrim(s) { sub(/^[ \t\r\n]+/, "", s); return s }
       function rtrim(s) { sub(/[ \t\r\n]+$/, "", s); return s }
       function trim(s) { return rtrim(ltrim(s)); }
-      { print "- " trim($1)}
+      { print "   - " trim($1)}
     '
 }
 

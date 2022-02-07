@@ -1,12 +1,12 @@
 ---
 title: {exif_title}
 layout: post
-permalink: /{year}/{country}/{slug}/
+permalink: /{year}/{country}-{slug}/
+md_path: {year}/{date}-{slug}.md
 image: {image_path}
-md_path: {year}/{country}/{fileslug}.md
 categories:
-- {year}
-- {country}
+   - {year}
+   - {country}
 tags:
 {keyword_bullets}
 ---
