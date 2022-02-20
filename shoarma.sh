@@ -131,7 +131,7 @@ do_generate() {
       replaces["img_credit"]=$(cached_exiftool "$image" "Credit")
       replaces["img_focal"]=$(cached_exiftool "$image" "Focal Length" | head -1 | sed 's/ $//g')
       replaces["img_iso"]=$(cached_exiftool "$image" "ISO")
-      replaces["img_keywords"]=$(cached_exiftool "$image" "Keywords")
+      replaces["img_keywords"]=$(cached_exiftool "$image" "Keywords" | sed 's/,/ /g')
       replaces["img_modified"]=$(cached_exiftool "$image" "File Modification Date/Time")
       replaces["img_shutter"]=$(cached_exiftool "$image" "Shutter Speed")
       replaces["img_resolution"]=$(cached_identify "$image" "Geometry" | cut -d+ -f1)
@@ -176,7 +176,6 @@ function replace_all(){
     awk_program="$awk_program gsub(/{$key}/,\"$val\"); "
   done
   awk_program="$awk_program print ; } "
-  debug "$awk_program"
   awk "$awk_program"
 }
 
@@ -216,7 +215,7 @@ function cached_identify(){
   local name="$2"
   local slug
   local hash
-  local image_exif
+  local image_meta
 
   slug=$(basename "$image" .jpg)
   hash=$(echo "$image" | hash 6)
@@ -278,6 +277,7 @@ keywords_to_country(){
     if( $1 == "netherlands" || $1 == "nederland") {country="netherlands"};
     if( $1 == "portugal") {country="portugal"};
     if( $1 == "romania") {country="romania"};
+    if( $1 == "slovenia") {country="slovenia"};
     if( $1 == "spain" || $1 == "espana") {country="spain"};
     if( $1 == "turkey") {country="turkey"};
     if( $1 == "uk" || $1 == "united kingdom" || $1 == "england" ) {country="uk"};

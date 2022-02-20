@@ -8,15 +8,16 @@ categories:
    - {img_country}
 tags: {img_keywords}
 ---
+   
+* <i class="fa-solid fa-map-pin"></i> Country: {img_country}
+* <i class="fa-solid fa-calendar-day"></i> Date: {img_date}
+* <i class="fa-solid fa-circle-user"></i> Photographer: {img_credit}
 
 ![{img_title}]({img_relative})
 
-* Country: {img_country}
-* Date: {img_date}
-* Photographer: {img_credit}
-* Camera: {img_camera}
-* Focal Length: {img_focal}
-* Shutter Speed: {img_shutter} sec
-* Aperture: f/{img_aperture}
-* ISO Sensitivity: {img_iso}
-* Resolution: {img_resolution}
+* <i class="fa-solid fa-camera"></i> Camera: {img_camera}
+* <i class="fa-solid fa-square-caret-left"></i> Focal Length: {img_focal}
+* <i class="fa-solid fa-stopwatch"></i> Shutter Speed: {img_shutter} sec
+* <i class="fa-solid fa-circle-dot"></i> Aperture: f/{img_aperture}
+* <i class="fa-solid fa-lightbulb"></i> ISO Sensitivity: {img_iso}
+* <i class="fa-solid fa-square-full"></i> Resolution: {img_resolution}
