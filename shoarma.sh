@@ -267,13 +267,13 @@ keywords_to_country(){
     if( $1 == "austria" || $1 == "osterreich") {country="austria"};
     if( $1 == "belgium" || $1 == "belgie" || $1 == "belgique" ) {country="belgium"};
     if( $1 == "bulgaria") {country="bulgaria"};
-    if( $1 == "croatia" || $1 == "horvath") {country="croatia"};
+    if( $1 == "croatia" || $1 == "porec") {country="croatia"};
     if( $1 == "france" ) {country="france"};
     if( $1 == "germany" || $1 == "deutschland") {country="germany"};
     if( $1 == "hungary") {country="hungary"};
     if( $1 == "ireland" || $1 == "eire") {country="ireland"};
     if( $1 == "italy" || $1 == "italia") {country="italy"};
-    if( $1 == "lebanon") {country="lebanon"};
+    if( $1 == "lebanon"  || $1 == "beirut" ) {country="lebanon"};
     if( $1 == "netherlands" || $1 == "nederland") {country="netherlands"};
     if( $1 == "portugal") {country="portugal"};
     if( $1 == "romania") {country="romania"};
