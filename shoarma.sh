@@ -19,14 +19,14 @@ flag|h|help|show usage
 flag|q|quiet|no output
 flag|v|verbose|output more
 flag|f|force|do not ask for confirmation (always yes)
-flag|x|clean|remove existing .md files from output folder
+flag|X|clean|remove existing .md files from output folder
 option|l|log_dir|folder for log files |$HOME/log/$script_prefix
 option|t|tmp_dir|folder for temp files|/tmp/$script_prefix
-option|c|country|default country|belgium
-option|b|root_dir|root folder of output website|.
-option|i|img_relative|filename for output img files|/images/{img_year}/{img_base}
-option|m|md_relative|filename for output MD files|/_posts/{img_year}/{img_date}-{img_slug}-{img_hash}.md
-option|t|template|markdown template for posts/pages|$script_install_folder/templates/post.md
+option|C|country|default country|belgium
+option|I|img_relative|filename for output img files|/images/{img_year}/{img_base}
+option|M|md_relative|filename for output MD files|/_posts/{img_year}/{img_date}-{img_slug}-{img_hash}.md
+option|R|root_dir|root folder of output website|.
+option|T|template|markdown template for posts/pages|$script_install_folder/templates/post.md
 param|1|action|action to perform: generate
 param|?|source|input folder with images
 " | grep -v '^#' | grep -v '^\s*$'
