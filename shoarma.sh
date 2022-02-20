@@ -23,10 +23,12 @@ flag|x|clean|remove existing .md files from output folder
 option|l|log_dir|folder for log files |$HOME/log/$script_prefix
 option|t|tmp_dir|folder for temp files|/tmp/$script_prefix
 option|c|country|default country|belgium
-option|i|input|input folder with images|./images
-option|m|template|markdown template|$script_install_folder/templates/post.md
-option|o|output|output folder for MD files|./_posts
+option|b|root_dir|root folder of output website|.
+option|i|img_relative|filename for output img files|/images/{img_year}/{img_base}
+option|m|md_relative|filename for output MD files|/_posts/{img_year}/{img_date}-{img_slug}-{img_hash}.md
+option|t|template|markdown template for posts/pages|$script_install_folder/templates/post.md
 param|1|action|action to perform: generate
+param|?|source|input folder with images
 " | grep -v '^#' | grep -v '^\s*$'
 }
 
@@ -84,89 +86,101 @@ do_generate() {
   log_to_file "generate"
   require_binary "exiftool"
   local image
+  local md_root
+  local img_root
+  local img_export
+  local img_folder
 
-  [[ ! -d "$input" ]] && die "Cannot find input folder [$input]"
-  debug "Input folder : [$input]"
-  [[ ! -d "$output" ]] && mkdir -p "$output"
-  debug "Output folder: [$output]"
+  [[ ! -d "$source" ]] && die "Cannot find input folder [$source]"
+  debug "Source folder: [$source]"
+
+  real_root=$(cd "$root_dir" && pwd)
+  md_root=$(derive_root_path "$real_root${md_relative:-}")
+  [[ ! -d "$md_root" ]] && mkdir -p "$md_root"
+  debug "Output MD files : [$md_root]"
+  if [[ $clean -gt 0 ]] ; then
+    debug "Delete .md files from [$md_root]"
+    find "$md_root" -type f -name "*.md" -exec rm {} \;
+  fi
+
+  img_root=$(derive_root_path "$real_root${img_relative:-}")
+  [[ ! -d "$img_root" ]] && mkdir -p "$img_root"
+  debug "Output IMG files: [$img_root]"
+  if [[ $clean -gt 0 ]] ; then
+    debug "Delete image files from [$img_root]"
+    find "$img_root" -type f -exec rm {} \;
+  fi
+
   [[ ! -f "$template" ]] && die "Cannot find template file [$template]"
-  debug "Template file: [$template]"
+  debug "Template: [$template]"
 
-  [[ $clean -gt 0 ]] && find "$output" -type f -name "*.md" -exec rm {} \;
-
-  find "$input" -type f -name "*.jpg" \
+  declare -A replaces
+  find "$source" -type f -name "*.jpg" \
   | while read -r image ; do
       progress "$image ..."
-      exif_title=$(read_exif "$image" "Object Name" | sed 's/://g')
-      hash=$(echo "$image" | hash 6)
-      slug=$(slugify "$exif_title" | cut -c 1-16)
-      [[ -z "$slug" ]] && slug="$hash"
-      filename=$(basename "$image" .jpg)
-      fileslug=$(slugify "$filename")
-      exif_author=$(read_exif "$image" "Credit")
-      exif_keywords=$(read_exif "$image" "Keywords")
-      keyword_bullets=$(echo "$exif_keywords" | keywords_to_bullets "," )
-      this_country=$(echo "$exif_keywords" | keywords_to_country "," "${country:-belgium}" )
-      exif_caption=$(read_exif "$image" "Caption-Abstract")
-      exif_modified=$(read_exif "$image" "File Modification Date/Time")
-      exif_created=$(read_exif "$image" "Date Created")
-      date="${exif_created:-$exif_modified}"
-      date=$(echo "$date" | sed 's/:/-/g' | cut -c1-10)
-      [[ -z "$exif_created" ]] && exif_created=$exif_modified
-      this_year=${exif_created:0:4}
-      image_path="/$(echo "$image" | sed 's|^./||')"
+      replaces["img_base"]=$(basename "$image")
+      replaces["img_title"]=$(cached_exiftool "$image" "Object Name" | sed 's/://g')
+      replaces["img_hash"]=$(echo "$image" | hash 6)
+      replaces["img_slug"]=$(slugify "${replaces["img_title"]}" | cut -c 1-16)
+      [[ -z "${replaces["img_slug"]}" ]] && replaces["img_slug"]="${replaces["img_hash"]}"
+      replaces["img_aperture"]=$(cached_exiftool "$image" "Aperture Value")
+      replaces["img_author"]=$(cached_exiftool "$image" "Credit")
+      replaces["img_camera"]=$(cached_exiftool "$image" "Camera Model Name")
+      replaces["img_caption"]=$(cached_exiftool "$image" "Caption-Abstract")
+      replaces["img_created"]=$(cached_exiftool "$image" "Date Created")
+      replaces["img_credit"]=$(cached_exiftool "$image" "Credit")
+      replaces["img_focal"]=$(cached_exiftool "$image" "Focal Length" | head -1 | sed 's/ $//g')
+      replaces["img_iso"]=$(cached_exiftool "$image" "ISO")
+      replaces["img_keywords"]=$(cached_exiftool "$image" "Keywords")
+      replaces["img_modified"]=$(cached_exiftool "$image" "File Modification Date/Time")
+      replaces["img_shutter"]=$(cached_exiftool "$image" "Shutter Speed")
+      replaces["img_resolution"]=$(cached_identify "$image" "Geometry" | cut -d+ -f1)
 
-      tmp_md=$tmp_dir/temp.$$.md
-      < "$template" awk \
-        -v country="$this_country" \
-        -v year="$this_year" \
-        -v slug="$slug" \
-        -v filename="$filename" \
-        -v fileslug="$fileslug" \
-        -v hash="$hash" \
-        -v exif_author="$exif_author" \
-        -v exif_caption="$exif_caption" \
-        -v exif_keywords="$exif_keywords" \
-        -v exif_modified="$exif_modified" \
-        -v exif_created="$exif_created" \
-        -v date="$date" \
-        -v exif_title="$exif_title" \
-        -v image_path="$image_path" \
-        -v keyword_bullets="$keyword_bullets" \
-        '
-      {
-        gsub("{country}",country);
-        gsub("{date}",date);
-        gsub("{exif_author}",exif_author);
-        gsub("{exif_caption}",exif_caption);
-        gsub("{exif_created}",exif_created);
-        gsub("{exif_created}",exif_created);
-        gsub("{exif_keywords}",exif_keywords);
-        gsub("{exif_modified}",exif_modified);
-        gsub("{exif_title}",exif_title);
-        gsub("{filename}",filename);
-        gsub("{fileslug}",fileslug);
-        gsub("{hash}",hash);
-        gsub("{image_path}",image_path);
-        gsub("{keyword_bullets}",keyword_bullets);
-        gsub("{slug}",slug);
-        gsub("{year}",year);
-        print;
-      }
-      ' > "$tmp_md"
+      replaces["img_country"]=$(echo "${replaces["img_keywords"]}" | keywords_to_country "," "${country:-belgium}" )
+      local date=${replaces["img_created"]}
+      [[ -z "$date" ]] && date=${replaces["img_modified"]}
+      replaces["img_date"]=$(echo "$date" | sed 's/:/-/g' | cut -c1-10)
+      replaces["img_year"]=${replaces["img_date"]:0:4}
+      replaces["img_relative"]=$(echo "$img_relative" | replace_all)
+      debug "Relative: [${replaces["img_relative"]}]"
 
-      local md_path=$(< "$tmp_md" awk -F: '$1 == "md_path" {gsub(" ","",$2);print $2}')
-      [[ -z "$md_path" ]] && md_path="$slug-$hash.md"
-      output_md="$output/$md_path"
-      debug "Output = $output_md"
-      folder_md=$(dirname "$output_md")
-      [[ ! -d "$folder_md" ]] && mkdir -p "$folder_md"
-      mv "$tmp_md" "$output_md"
+      img_export=$(echo "$real_root$img_relative" | replace_all)
+      debug "Export  : [$img_export]"
+      img_folder=$(dirname "$img_export")
+      [[ ! -d "$img_folder" ]] && mkdir -p "$img_folder"
+      cp "$image" "$img_export"
+
+      md_export=$(echo "$real_root$md_relative" | replace_all)
+      debug "Output  : [$md_export]"
+      md_folder=$(dirname "$md_export")
+      [[ ! -d "$md_folder" ]] && mkdir -p "$md_folder"
+
+      < "$template" replace_all > "$md_export"
+
     done
 }
 
+function derive_root_path(){
+  # /_posts/{year}/{whatever}      --> /_posts
+  # /_posts/year_{year}/{whatever} --> /_posts
+  echo "$1" | cut -d'{' -f1 |  sed 's|/[^/]*$||'
+}
 
-function read_exif(){
+function replace_all(){
+  # $1 = array of key => val
+  local awk_program="{  ";
+  local key
+  local val
+  for key in "${!replaces[@]}"; do
+    val="${replaces[$key]}"
+    awk_program="$awk_program gsub(/{$key}/,\"$val\"); "
+  done
+  awk_program="$awk_program print ; } "
+  debug "$awk_program"
+  awk "$awk_program"
+}
+
+function cached_exiftool(){
   local image="$1"
   local name="$2"
   local slug
@@ -197,6 +211,37 @@ function read_exif(){
   '
 }
 
+function cached_identify(){
+  local image="$1"
+  local name="$2"
+  local slug
+  local hash
+  local image_exif
+
+  slug=$(basename "$image" .jpg)
+  hash=$(echo "$image" | hash 6)
+  image_meta="$tmp_dir/$slug.$hash.identify.txt"
+  if [[ ! -f "$image_meta" ]] ; then
+    debug "Get EXIF into $image_meta"
+    LC_ALL=C LC_CTYPE=C LANG=C \
+      identify -verbose "$image" \
+    | sed 's/:/|/' \
+    > "$image_meta" 2>/dev/null
+  fi
+  < "$image_meta" awk -v name="$name" -F'|' '
+    function ltrim(s) { sub(/^[ \t\r\n]+/, "", s); return s }
+    function rtrim(s) { sub(/[ \t\r\n]+$/, "", s); return s }
+    function trim(s) { return rtrim(ltrim(s)); }
+    {
+      $1=trim($1)
+      $2=trim($2)
+      if($1 == name) {
+        print $2
+        }
+    }
+  '
+}
+
 keywords_to_bullets(){
   tr "${1:-,}" "\n" \
   | awk '
@@ -211,6 +256,7 @@ keywords_to_country(){
   local country="${2:-belgium}"
     tr "${1:-,}" "\n" \
     | awk -v def_country="$country" '
+    function titlecase(s) { return toupper(substr(s,1,1)) tolower(substr(s,2))}
     function ltrim(s) { sub(/^[ \t\r\n]+/, "", s); return s }
     function rtrim(s) { sub(/[ \t\r\n]+$/, "", s); return s }
     function trim(s) { return rtrim(ltrim(s)); }
@@ -237,7 +283,7 @@ keywords_to_country(){
     if( $1 == "uk" || $1 == "united kingdom" || $1 == "england" ) {country="uk"};
     }
     END{
-    print country;
+    print titlecase(country);
     }
   '
 }
@@ -935,9 +981,9 @@ import_env_if_any() {
 clean_dotenv() {
   local input="$1"
   local output="$1.__.sh"
-  [[ ! -f "$input" ]] && die "Input file [$input] does not exist"
+  [[ ! -f "$source" ]] && die "Input file [$source] does not exist"
   debug "$clean_icon Clean dotenv: [$output]"
-  awk <"$input" '
+  awk <"$source" '
       function ltrim(s) { sub(/^[ \t\r\n]+/, "", s); return s }
       function rtrim(s) { sub(/[ \t\r\n]+$/, "", s); return s }
       function trim(s) { return rtrim(ltrim(s)); }

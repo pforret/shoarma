@@ -38,3 +38,7 @@ build-iPhoneSimulator/
 
 .idea
 _posts/*/*
+/test_source/
+/images/
+/_posts/
+/test_source/

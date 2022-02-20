@@ -1,19 +1,22 @@
 ---
-title: {exif_title}
+title: {img_title}
 layout: post
-permalink: /{year}/{country}-{slug}-{hash}/
-md_path: {year}/{date}-{slug}-{hash}.md
-image: {image_path}
+permalink: /{img_year}/{img_country}-{img_slug}-{img_hash}/
+image: {img_relative}
 categories:
-   - {year}
-   - {country}
-tags:
-{keyword_bullets}
+   - {img_year}
+   - {img_country}
+tags: {img_keywords}
 ---
-{exif_caption}
 
-* Country: {country}
-* Date: {date}
+![{img_title}]({img_relative})
 
-![{exif_title}]({image_path})
-
+* Country: {img_country}
+* Date: {img_date}
+* Photographer: {img_credit}
+* Camera: {img_camera}
+* Focal Length: {img_focal}
+* Shutter Speed: {img_shutter} sec
+* Aperture: f/{img_aperture}
+* ISO Sensitivity: {img_iso}
+* Resolution: {img_resolution}
