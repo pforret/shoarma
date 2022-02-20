@@ -136,7 +136,7 @@ do_generate() {
       replaces["img_shutter"]=$(cached_exiftool "$image" "Shutter Speed")
       replaces["img_resolution"]=$(cached_identify "$image" "Geometry" | cut -d+ -f1)
 
-      replaces["img_country"]=$(echo "${replaces["img_keywords"]}" | keywords_to_country "," "${country:-belgium}" )
+      replaces["img_country"]=$(echo "${replaces["img_keywords"]}" | keywords_to_country " " "${country:-belgium}" )
       local date=${replaces["img_created"]}
       [[ -z "$date" ]] && date=${replaces["img_modified"]}
       replaces["img_date"]=$(echo "$date" | sed 's/:/-/g' | cut -c1-10)
@@ -270,6 +270,7 @@ keywords_to_country(){
     if( $1 == "croatia" || $1 == "porec") {country="croatia"};
     if( $1 == "france" ) {country="france"};
     if( $1 == "germany" || $1 == "deutschland") {country="germany"};
+    if( $1 == "greece") {country="greece"};
     if( $1 == "hungary") {country="hungary"};
     if( $1 == "ireland" || $1 == "eire") {country="ireland"};
     if( $1 == "italy" || $1 == "italia") {country="italy"};
